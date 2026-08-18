@@ -1,0 +1,8 @@
+.gitignore
+.vscodeignore
+*.vsix
+package-lock.json
+node_modules/**
+!node_modules/fflate/package.json
+!node_modules/fflate/LICENSE
+!node_modules/fflate/lib/node.cjs

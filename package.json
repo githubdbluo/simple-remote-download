@@ -1,0 +1,35 @@
+{
+  "name": "simple-remote-download",
+  "displayName": "Simple Remote Download",
+  "description": "Browse the remote filesystem and download a file to a local path.",
+  "version": "0.1.0",
+  "publisher": "AlumKal",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alumkal/simple-remote-download.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "extensionKind": [
+    "ui"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "simpleRemoteDownload.download",
+        "title": "Download Remote File by Path...",
+        "category": "Remote"
+      }
+    ]
+  },
+  "dependencies": {
+    "fflate": "^0.8.3"
+  }
+}
