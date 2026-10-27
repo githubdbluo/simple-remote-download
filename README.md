@@ -14,6 +14,17 @@ Runs as a **UI extension** (`"extensionKind": ["ui"]`), so it works in any remot
    - **Enter** on the `.` row, or the cloud-download button on a folder, downloads that directory.
 4. For directories, choose a format, then pick a local destination in the native save dialog (defaults to `~/Downloads`).
 
+### Download an open file directly
+
+Right-click a remote file's editor tab and select **Download to Local...** to
+save that file locally, including files outside the current workspace. You can
+also run **Remote: Download to Local...** from the Command Palette for the active
+file tab. This works for text, notebook, and file-backed custom editor tabs
+(such as spreadsheets); the clicked tab takes priority over the active editor.
+
+Downloads use the file's saved contents. If the editor reports unsaved changes,
+you can cancel and save first, or explicitly download the saved version.
+
 ## Directory formats
 
 | Format | How it's produced |

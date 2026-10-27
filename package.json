@@ -26,8 +26,25 @@
         "command": "simpleRemoteDownload.download",
         "title": "Download Remote File by Path...",
         "category": "Remote"
+      },
+      {
+        "command": "simpleRemoteDownload.downloadEditorFile",
+        "title": "Download to Local...",
+        "category": "Remote"
       }
-    ]
+    ],
+    "menus": {
+      "editor/title/context": [
+        {
+          "command": "simpleRemoteDownload.downloadEditorFile",
+          "when": "resourceScheme == vscode-remote",
+          "group": "2_files@2"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
   },
   "dependencies": {
     "fflate": "^0.8.3"

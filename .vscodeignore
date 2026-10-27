@@ -2,6 +2,7 @@
 .vscodeignore
 *.vsix
 package-lock.json
+test/**
 node_modules/**
 !node_modules/fflate/package.json
 !node_modules/fflate/LICENSE

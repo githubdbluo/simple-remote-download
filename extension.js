@@ -296,6 +296,48 @@ async function downloadCommand() {
 		return;
 	}
 	const { uri: source, isDir } = picked;
+	return downloadResource(source, isDir);
+}
+
+/** Download the clicked editor's resource without consulting Explorer selection. */
+async function downloadEditorFile(resource) {
+	const source = resource === undefined
+		? vscode.window.tabGroups.activeTabGroup.activeTab?.input?.uri
+		: resource;
+	if (!(source instanceof vscode.Uri) || source.scheme !== 'vscode-remote') {
+		await vscode.window.showErrorMessage('Select a saved remote file tab first.');
+		return;
+	}
+	try {
+		const stat = await vscode.workspace.fs.stat(source);
+		if (stat.type & vscode.FileType.Directory) {
+			await vscode.window.showErrorMessage('Select a file tab, not a directory.');
+			return;
+		}
+		const dirty = vscode.window.tabGroups.all.some(group => group.tabs.some(tab =>
+			tab.isDirty && tab.input?.uri?.toString() === source.toString()
+		)) || vscode.workspace.textDocuments.some(document =>
+			document.isDirty && document.uri.toString() === source.toString()
+		);
+		if (dirty) {
+			const savedVersion = 'Download Saved Version';
+			const choice = await vscode.window.showWarningMessage(
+				'This file has unsaved changes. Save it first to include them, or download the saved version.',
+				{ modal: true }, savedVersion
+			);
+			if (choice !== savedVersion) {
+				return;
+			}
+		}
+		return await downloadResource(source, false);
+	} catch (err) {
+		await vscode.window.showErrorMessage(
+			`Download failed: ${err instanceof Error ? err.message : String(err)}`
+		);
+	}
+}
+
+async function downloadResource(source, isDir) {
 	const baseName = path.posix.basename(source.path) || source.authority;
 
 	let fmt = { ext: '', kind: 'copy' };
@@ -355,7 +397,8 @@ async function downloadCommand() {
 
 function activate(context) {
 	context.subscriptions.push(
-		vscode.commands.registerCommand('simpleRemoteDownload.download', downloadCommand)
+		vscode.commands.registerCommand('simpleRemoteDownload.download', downloadCommand),
+		vscode.commands.registerCommand('simpleRemoteDownload.downloadEditorFile', downloadEditorFile)
 	);
 }
 
